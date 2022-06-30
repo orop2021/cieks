@@ -12,7 +12,7 @@ spec:
         labels:
            app: web-app
       spec:
-        container:
+        containers:
            - name: web-app
              image: okip/cieks
              ports:
