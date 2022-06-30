@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+    name: web-app-deployment
+spec:
+    replicas: 3
+    selector: 
+       matchlabels:
+          app: web-app
+    template:
+      metadata:
+        labels:
+           app: web-app
+      spec:
+        container:
+           - name: web-app
+             image: okip/cieks
+             ports:
+             - containerPort: 8085
+---
+apiVersion: v1
+kind: service
+metadata:
+   name: web-app-svc
+spec:
+   selector:
+      app:
+   ports:
+      - protocol: TCP
+        port: 8085
+        targetPort: 8085
+   type: loadBalancer
