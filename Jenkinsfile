@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'EKS-CRED-ID', namespace: '', serverUrl: '') {
-                     sh 'kubectl apply -f eks-deploy.yml'
+                     sh 'kubectl apply -f eks-deploy.yml  --validate=false'
                   }
                 }
             }
