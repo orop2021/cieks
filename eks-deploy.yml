@@ -1,32 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
-    name: web-app
+metadata:
+  labels:
+    app: web-app
+  name: web-app
 spec:
-    replicas: 3
-    selector: 
-       matchlabels:
-          app: web-app
-    template:
-      metadata:
-        labels:
-           app: web-app
-      spec:
-        containers:
-           - name: web-app
-             image: okip/cieks
-             ports:
-             - containerPort: 8085
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: cieks
+        image: okip/cieks
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8085
+          name: http
+          protocol: TCP
+# service type loadbalancer       
 ---
 apiVersion: v1
-kind: service
+kind: Service
 metadata:
-   name: web-app-svc
+  labels:
+    app: web-app
+    k8s-app: web-app
+  name: web-app
 spec:
-   selector:
-      app:
-   ports:
-      - protocol: TCP
-        port: 8085
-        targetPort: 8085
-   type: loadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8085
+  type: LoadBalancer
+  selector:
+    app: web-app
